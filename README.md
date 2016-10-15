@@ -5,7 +5,7 @@ Ein JugendHackt-Berlin Projekt zum Einbruchsschutz.
 - Arduino Nano
 - Funkempfänger und -sender
 - SMS-Sender inklusive SIM-Karte
-- Raspberry PI 3
+- Raspberry PI 3 Model B
 - Bewegungsmelder und andere Sensoren
 
 ## Funktionsweise
