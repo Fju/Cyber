@@ -3,7 +3,7 @@
 #define PIN_BEWEGUNGSMELDER 6
 #define PIN_SENDER 5
 
-int uid = 14248; //TODO: keine feste UID
+int uid = 31875; //TODO: keine feste UID
 
 void setup() {
   Serial.begin(9600);
