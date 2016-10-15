@@ -50,32 +50,43 @@ void setup()
 void loop()
 {
   Serial.println("Passwort eingeben!");
-if (checkPasswd(typed(), password)) {
-  Serial.println("Richtig!");
-} else {
-  Serial.println("Falsch!");
-}
-
+  if (checkPasswd(typed(), password)) {
+    Serial.println("Richtig!");
+  } else {
+    Serial.println("Falsch!");
+  }
 }
 
 char *typed() {
   char typed_passwd[4];
   int x = 0;
-  for (x; x < 4; x++){
-     typed_passwd[x] = kpd.getKey();
-     Serial.println(typed_passwd[x]);
+  for (x; x < 4; x++) {
+    typed_passwd[x] = key();
+    Serial.println(typed_passwd[x]);
   }
-  return *typed_passwd;
-  }
+  return typed_passwd;
+}
 
 
 
-boolean checkPasswd (char passwd[4] ,char passwd_typed[4]) {
+boolean checkPasswd (char passwd[4] , char passwd_typed[4]) {
   for (int x = 1; x < 4; x++) {
-    if (passwd_typed[x] =! passwd[x]) {
+    if (passwd_typed[x] != passwd[x]) {
       return false;
     }
   }
- return true;
+  return true;
 }
 
+char key() {
+  char letter;
+  letter = kpd.getKey();
+  while (true) {
+    if (letter) {
+      return letter;
+    } else {
+
+      letter = kpd.getKey();
+    }
+  }
+}
