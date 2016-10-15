@@ -29,7 +29,8 @@ void loop() {
   int bewegungsMelder = digitalRead(PIN_BEWEGUNGSMELDER);
 
   msg[2] = bewegungsMelder << 6; //Index: 0
-  
+
+  Serial.println(msg[2]);
   
 
   //Nachricht senden

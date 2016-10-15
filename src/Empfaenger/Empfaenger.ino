@@ -1,14 +1,13 @@
 #include <VirtualWire.h>
 
 
-#define PIN_RECEIVE A1  //RF Receiver pin = Analog pin 0
+#define PIN_RECEIVE A0  //RF Receiver pin = Analog pin 0
 
+bool alarm = false;
 
-byte message[VW_MAX_MESSAGE_LEN];    // a buffer to hold the incoming messages
-byte msgLength = VW_MAX_MESSAGE_LEN;
-
-void setup() {
+void setup() {  
   Serial.begin(9600);
+  
   vw_set_rx_pin(PIN_RECEIVE);
   vw_setup(2000);
 
@@ -16,20 +15,27 @@ void setup() {
 }
 
 void loop() {
-  uint8_t buf[VW_MAX_MESSAGE_LEN];
-  uint8_t buflen = VW_MAX_MESSAGE_LEN;
+  if (!alarm) {
+    uint8_t buf[4];
+    uint8_t buflen = 4;
 
-  if (vw_get_message(buf, &buflen)) {
-    int i;
-
-    // Message with a good checksum received, print it.
-    Serial.print("Got: ");
-    for (i = 0; i < buflen; i++) {
-      Serial.print((char)buf[i]);
-      Serial.print(' ');
+    if (vw_get_message(buf, &buflen)) {
+      int uid = buf[0] << 8 | buf[1];
+      int bewegungsMelder = buf[2];
+      if (bewegungsMelder == 1 << 6) {        
+        Serial.println("AT+CMGF=1");
+        delay(500);
+        Serial.println("AT+CMGS=015778902929");
+        delay(1000);
+        Serial.print("Einbruchsalarm");
+        delay(500);
+        Serial.print(char(26));
+        alarm = true;
+      }
     }
-    Serial.println();
-    
+  } else {
+    delay(10000);
+    alarm = false;  
   }
 }
 
